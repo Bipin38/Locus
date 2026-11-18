@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LOCUS: Training-Free Multi-View Object Grounding for Smart Eyewear">
+  <meta name="keywords" content="LOCUS, object grounding, 3D Gaussian Splatting, open-vocabulary, vision-language model, SAM, smart eyewear, LERF-OVS">
+  <title>LOCUS: Training-Free Multi-View Object Grounding for Smart Eyewear</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="static/css/academicons.min.css">
+
+  <style>
+    body { font-family: 'Noto Sans', sans-serif; }
+    .publication-title { font-family: 'Google Sans', sans-serif; }
+    .publication-title .brand { color: #0b7285; }
+    .publication-authors { font-family: 'Google Sans', sans-serif; }
+    .publication-authors a { color: hsl(204, 86%, 53%) !important; }
+    .publication-authors a:hover { text-decoration: underline; }
+    .author-block { display: inline-block; }
+    .link-block a { margin: 4px 2px; }
+    .link-block a.is-disabled { opacity: .55; pointer-events: none; }
+    .title.is-3 { font-family: 'Google Sans', sans-serif; }
+    .content.has-text-justified p { line-height: 1.7; }
+    .teaser img, .figure img { width: 100%; border-radius: 6px; }
+    .figure-caption { font-size: .95rem; color: #4a4a4a; margin-top: .6rem; text-align: left; }
+    .stat-box { text-align: center; padding: 1.2rem .5rem; border-radius: 8px; background: #e6f4f6; height: 100%; }
+    .stat-box .num { font-family: 'Google Sans', sans-serif; font-size: 2rem; font-weight: 700; color: #0b7285; line-height: 1.1; }
+    .stat-box .lbl { font-size: .9rem; color: #555; margin-top: .3rem; }
+    .result-table td, .result-table th { text-align: center !important; vertical-align: middle; }
+    .result-table td:first-child, .result-table th:first-child { text-align: left !important; }
+    .result-table .best { font-weight: 700; color: #0b7285; }
+    .result-table tr.ours td { background: #f1f9fa; }
+    .table-note { font-size: .85rem; color: #666; }
+    pre { background: #f5f5f5; border-radius: 6px; font-size: .85rem; white-space: pre-wrap; }
+    .footer { padding: 2rem 1.5rem 3rem; }
+    .section-alt { background: #fafafa; }
+    .table-container { overflow-x: auto; }
+    .qual-labels { display: grid; grid-template-columns: repeat(5, 1fr); font-family: 'Google Sans', sans-serif; font-weight: 600; font-size: .85rem; color: #363636; margin-bottom: .3rem; }
+    .qual-labels span { text-align: center; }
+  </style>
+</head>
+<body>
+
+<!-- ==================== HERO / TITLE ==================== -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="brand">LOCUS</span>: Training-Free Multi-View Object Grounding for Smart Eyewear
+          </h1>
+
+          <div class="is-size-5 publication-authors">
+            <!-- TODO: replace "#" with personal homepages if desired -->
+            <span class="author-block"><a href="#">Bipin Ghimire</a>,</span>
+            <span class="author-block"><a href="#">Shivanand Venkanna Sheshappanavar</a></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Geometric Intelligence Research Lab, Dept. of Electrical Engineering and Computer Science,<br>University of Wyoming</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- TODO: replace each href="#" with the real link and remove class "is-disabled" -->
+              <span class="link-block">
+                <a href="#" class="button is-normal is-rounded is-dark is-disabled" target="_blank">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="button is-normal is-rounded is-dark is-disabled" target="_blank">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span><span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="button is-normal is-rounded is-dark is-disabled" target="_blank">
+                  <span class="icon"><i class="fab fa-github"></i></span><span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="button is-normal is-rounded is-dark is-disabled" target="_blank">
+                  <span class="icon"><i class="fas fa-database"></i></span><span>Dataset</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#BibTeX" class="button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-quote-right"></i></span><span>BibTeX</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TEASER ==================== -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body has-text-centered" style="padding-top:0;">
+      <img src="static/images/teaser.jpg" alt="Grounding small and similar objects in LERF-OVS: stored language field vs. LOCUS" style="max-width:720px;">
+      <p class="figure-caption">
+        <b>Grounding small and similar objects in LERF-OVS.</b> Green outlines show ground truth, red fills show predictions, and numbers are IoU&times;100.
+        The stored language field (left) misses <i>onion segments</i> and selects the wrong duck for <i>rubber duck with buoy</i>; LOCUS (right) grounds both.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== STATS ==================== -->
+<section class="section" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="columns is-mobile is-multiline is-centered">
+      <div class="column is-half-mobile is-one-quarter-tablet"><div class="stat-box"><div class="num">80.8</div><div class="lbl">mIoU on LERF-OVS<br>(4B VLM, 4 views)</div></div></div>
+      <div class="column is-half-mobile is-one-quarter-tablet"><div class="stat-box"><div class="num">72.7</div><div class="lbl">small-object mIoU<br>(vs. 50.6 baseline)</div></div></div>
+      <div class="column is-half-mobile is-one-quarter-tablet"><div class="stat-box"><div class="num">+19.7</div><div class="lbl">mIoU over stored-feature<br>baseline</div></div></div>
+      <div class="column is-half-mobile is-one-quarter-tablet"><div class="stat-box"><div class="num">0</div><div class="lbl">task-specific<br>training</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ABSTRACT ==================== -->
+<section class="section section-alt">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Helping users locate small objects in previously scanned environments is an important capability for smart eyewear.
+            This requires grounding natural-language queries in a 3D scene, where small objects and visually similar instances remain
+            challenging for stored language-feature fields. We present <b>LOCUS</b>, a method for open-vocabulary object grounding in
+            3D Gaussian scenes that requires no additional task-specific training. Given a query, LOCUS uses a pretrained vision-language
+            model and SAM to segment the target across several rendered views. Center-based, visibility-weighted multi-view consensus
+            identifies a supporting set of Gaussians, which guides segmentation in the query view, followed by vision-language verification
+            of candidate masks.
+          </p>
+          <p>
+            On LERF-OVS, a 4B model using four views achieves 80.8 mIoU, compared to 61.1 for a stored-feature baseline reproduced in our
+            pipeline and 65.0 for the strongest published baseline, whose results use different reconstructions. On 85 small-object queries,
+            it achieves 72.7 mIoU, compared to 50.6 for the stored-feature baseline. In a selection replay without stored language features,
+            it retains 80.4 mIoU overall. We also analyze resource requirements for a proposed glasses-and-companion architecture in an
+            offline study, without on-device evaluation.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== METHOD ==================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Method</h2>
+        <div class="figure">
+          <img src="static/images/overview.png" alt="Overview of the LOCUS pipeline">
+          <p class="figure-caption">
+            <b>Overview of LOCUS.</b> Single-view VLM localization and SAM segmentation produce M<sub>sv</sub>, while center-based,
+            visibility-weighted multi-view voting guides the consensus candidate M<sub>cp</sub>. The VLM verifies these two candidates,
+            and the confidence and overlap rules select the final query-view mask M<sub>q</sub>, with the stored-feature mask M<sub>f</sub>
+            available as a fallback. The grounding pipeline requires no additional task-specific training.
+          </p>
+        </div>
+        <div class="content has-text-justified" style="margin-top:1.5rem;">
+          <p>
+            Given a reconstructed 3D Gaussian scene, a camera pose, and a text query, LOCUS predicts the target mask in the query view.
+            It selects a small set of existing training cameras by k-means over camera positions, runs Qwen3-VL to localize the target and
+            SAM to segment it in each rendered view, and lets the views vote on which Gaussians belong to the target. The voted region is
+            projected into the query view to guide segmentation, and the VLM then verifies the consensus candidate against a single-view
+            candidate. This separates multi-view evidence for <i>which</i> object and <i>where</i> from precise mask generation.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== RESULTS ==================== -->
+<section class="section section-alt">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Results on LERF-OVS</h2>
+
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-11">
+        <h3 class="title is-5 has-text-centered">Query-view segmentation (mIoU&times;100)</h3>
+        <div class="table-container">
+        <table class="table is-fullwidth is-striped is-narrow result-table">
+          <thead>
+            <tr><th>Method</th><th>ramen&dagger;</th><th>figurines</th><th>teatime</th><th>waldo_kitchen</th><th>mean</th><th>w/o&dagger;</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>LERF</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>37.4</td><td>&ndash;</td></tr>
+            <tr><td>GOI</td><td>33.7</td><td>23.9</td><td>55.8</td><td>54.5</td><td>42.0</td><td>44.7</td></tr>
+            <tr><td>LangSplat</td><td>51.2</td><td>44.7</td><td>65.1</td><td>44.5</td><td>51.4</td><td>51.4</td></tr>
+            <tr><td>GAGS</td><td>46.8</td><td>53.6</td><td>60.3</td><td>55.8</td><td>54.1</td><td>56.6</td></tr>
+            <tr><td>GALA</td><td>35.1</td><td>59.4</td><td>76.7</td><td>50.8</td><td>55.5</td><td>62.3</td></tr>
+            <tr><td>LangSplatV2</td><td>51.8</td><td>56.4</td><td>72.2</td><td>59.1</td><td>59.9</td><td>62.6</td></tr>
+            <tr><td>OccamLGS</td><td>51.0</td><td>58.6</td><td>70.2</td><td>65.3</td><td>61.3</td><td>64.7</td></tr>
+            <tr><td>OpenGaFF</td><td>53.8</td><td>64.3</td><td>76.1</td><td>65.8</td><td>65.0</td><td>68.7</td></tr>
+            <tr class="ours"><td><b>LOCUS</b>, 8B, 12 views</td><td class="best">82.0</td><td>76.7</td><td>82.7</td><td>77.0</td><td>79.6</td><td>78.8</td></tr>
+            <tr class="ours"><td><b>LOCUS</b>, 4B, 4 views</td><td>79.6</td><td class="best">77.9</td><td class="best">86.9</td><td class="best">78.7</td><td class="best">80.8</td><td class="best">81.2</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="table-note">
+          Published baseline values are taken from their respective papers, except LERF's 37.4, as reported by LangSplat.
+          &dagger; denotes the scene used to select default settings; &ldquo;w/o&dagger;&rdquo; averages the other three scenes.
+          Published baselines use different reconstructions.
+        </p>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:2rem;">
+      <div class="column is-8">
+        <h3 class="title is-5 has-text-centered">Accuracy by object size (mIoU&times;100)</h3>
+        <table class="table is-fullwidth is-striped is-narrow result-table">
+          <thead>
+            <tr><th>Object size</th><th>Queries</th><th>Stored feature</th><th>LOCUS 8B</th><th>LOCUS 4B</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Small (&lt; 1%)</td><td>85</td><td>50.6</td><td>71.5</td><td class="best">72.7</td></tr>
+            <tr><td>Medium (1&ndash;4%)</td><td>80</td><td>58.0</td><td class="best">86.5</td><td>83.5</td></tr>
+            <tr><td>Large (&gt; 4%)</td><td>43</td><td>69.9</td><td>85.9</td><td class="best">93.4</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">Queries are grouped by ground-truth mask area as a fraction of image area.</p>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered" style="margin-top:2rem;">
+      <div class="column">
+        <h3 class="title is-5">Qualitative examples</h3>
+        <div class="figure">
+          <div class="qual-labels">
+            <span>Query view (GT)</span><span>Stored feature</span><span>Single-view</span><span>Consensus-guided</span><span>Selected (LOCUS)</span>
+          </div>
+          <img src="static/images/qualitative.jpg" alt="Qualitative examples comparing stored-feature, single-view, consensus and selected outputs">
+          <p class="figure-caption">
+            Rows: <i>rubber duck with buoy</i>, <i>bag</i>, <i>wavy noodles</i>. Columns show the query view with ground truth in green, the stored-feature prediction, the single-view candidate,
+            the consensus-guided candidate, and the selected output. Predictions are filled in red. For <i>rubber duck with buoy</i>,
+            multi-view guidance corrects the selection of a different duck. For <i>bag</i>, it recovers a target the single-view candidate missed.
+            For <i>wavy noodles</i>, the selected output uses the stored-feature fallback. All query images shown are rendered from the scan.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== WEARABLE ==================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Towards Smart Eyewear</h2>
+    <div class="columns is-vcentered" style="margin-top:1.5rem;">
+      <div class="column is-half">
+        <div class="figure">
+          <img src="static/images/architecture.png" alt="Proposed glasses-and-companion architecture">
+          <p class="figure-caption">
+            <b>Proposed glasses-and-companion architecture.</b> Glasses send a query, pose, and optional frame; the companion stores the scene,
+            models, and cached regions, and returns a pointer and mask. Costs were measured on an H100; end-to-end wearable operation is unevaluated.
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="figure">
+          <img src="static/images/pose.png" alt="Pointer success under camera-pose perturbations">
+          <p class="figure-caption">
+            <b>Pointer success under synthetic camera-pose perturbations</b>, evaluated against the ground-truth mask at the original query pose.
+            Translation magnitudes are relative to camera-to-object distance; each setting uses three random draws over all 208 queries.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="content has-text-justified" style="margin-top:1rem;">
+      <p>
+        The compact 4B, four-view configuration needs about 8.6&nbsp;GB of VLM memory, compared with 16.6&nbsp;GB for the 8B reference.
+        Stored language features would add 2.2&ndash;13.2&nbsp;GB per scene on top of 183&ndash;527&nbsp;MB of geometry, yet removing them
+        in a selection replay keeps 80.4 mIoU. With real photographs instead of rendered query images, the 4B model reaches 82.6 mIoU.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== BIBTEX ==================== -->
+<section class="section section-alt" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3">BibTeX</h2>
+    <pre><code>@misc{ghimire2026locus,
+  title  = {LOCUS: Training-Free Multi-View Object Grounding for Smart Eyewear},
+  author = {Ghimire, Bipin and Sheshappanavar, Shivanand Venkanna},
+  year   = {2026}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        Geometric Intelligence Research Lab &middot; University of Wyoming<br>
+        This page is adapted from the <a href="https://github.com/nerfies/nerfies.github.io" target="_blank">Nerfies</a> project page template,
+        licensed under <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>.
+      </p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
